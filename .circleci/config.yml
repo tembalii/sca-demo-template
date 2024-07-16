@@ -1,0 +1,25 @@
+version: 2.1
+jobs:
+  semgrep-scan:
+    parameters:
+      repo_path:
+        type: string
+        default: adamberman/sca-demo
+      default_branch:
+        type: string
+        default: main
+    environment:
+      SEMGREP_REPO_NAME: << parameters.repo_path >>
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+    docker:
+      - image: returntocorp/semgrep:develop
+    steps:
+      - checkout
+      - run:
+          name: "Semgrep scan"
+          command: semgrep ci --sca
+workflows:
+  main:
+    jobs:
+      - semgrep-scan

@@ -1,0 +1,24 @@
+name: Semgrep SCA
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+  pull_request: {}
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/semgrep-sca.yml
+jobs:
+  semgrep-sca:
+    name: Scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep:develop
+    steps:
+      # Fetch project source
+      - uses: actions/checkout@v3
+      - run: semgrep ci --sca
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
