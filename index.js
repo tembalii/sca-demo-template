@@ -13,7 +13,7 @@ function hello() {
 
 }
 
-// _.merge(myObj, maliciousObject);
+_.merge(myObj, maliciousObject);
 
 
 hello();
